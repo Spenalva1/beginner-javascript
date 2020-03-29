@@ -12,7 +12,9 @@
 
 <body>
   <script>
-    const toppings = ['Mushrooms ', 'Tomatoes', 'Eggs', 'Chili', 'Lettuce', 'Avocado', 'Chiles', 'Bacon', 'Pickles', 'Onions', 'Cheese'];
+    const toppings = ['Mushrooms ', 'Tomatoes', 'Eggs', 'Chili', 'Lettuce', 'Avocado', 'Chiles', 'Bacon', 'Pickles',
+      'Onions', 'Cheese'
+    ];
 
     const buns = ['egg', 'wonder', 'brioche'];
 
@@ -31,69 +33,137 @@
 
     const orderTotals = [342, 1002, 523, 34, 634, 854, 1644, 2222];
 
-    const feedback = [
-      { comment: 'Love the burgs', rating: 4 },
-      { comment: 'Horrible Service', rating: 2 },
-      { comment: 'Smoothies are great, liked the burger too', rating: 5 },
-      { comment: 'Ambiance needs work', rating: 3 },
-      { comment: 'I DONT LIKE BURGERS', rating: 1 },
+    const feedback = [{
+        comment: 'Love the burgs',
+        rating: 4
+      },
+      {
+        comment: 'Horrible Service',
+        rating: 2
+      },
+      {
+        comment: 'Smoothies are great, liked the burger too',
+        rating: 5
+      },
+      {
+        comment: 'Ambiance needs work',
+        rating: 3
+      },
+      {
+        comment: 'I DONT LIKE BURGERS',
+        rating: 1
+      },
     ];
 
 
     /*
       Static Methods
     */
+    console.clear();
 
     // Array.of();
 
     // Make a function that creates a range from x to y with Array.from();
+    function createRange(x, y) {
+      return Array.from({
+        length: y - x + 1
+      }, function (item, index) {
+        return index + x;
+      });
+    }
+
 
     // Check if the last array you created is really an array with Array.isArray();
+    fiveToTen = createRange(5, 10);
+    isArray = Array.isArray(fiveToTen);
 
     // Take the meats object and make three arrays with Object.entries(), Object.keys, Object.values()
+    entries = Object.entries(meats);
+    keys = Object.keys(meats)
+    values = Object.values(meats);
 
     /*
       Instance Methods
     */
 
     // Display all bun types with " or " - use join()
+    bunString = buns.join(' or ');
 
     // We have a string "hot dogs,hamburgers,sausages,corn" - use split() to turn it into a string
+    meals = "hot dogs,hamburgers,sausages,corn";
+    mealsArray = meals.split(',');
 
     // take the last item off toppings with pop()
+    lastTopping = toppings.pop();
     // add it back with push()
+    toppings.push(lastTopping);
     // take the first item off toppings with shift()
+    firstTopping = toppings.shift();
     // add it back in with unshift()
+    toppings.unshift(firstTopping);
     // Do the last four,but immutable (with spreads and new variables)
+    //1 
+    newToppings = toppings.slice(0, toppings.length - 1);
+    //2
+    newToppings = [...newToppings, toppings[toppings.length - 1]];
+    //3
+    newToppings = toppings.slice(1, toppings.length);
+    //4
+    newToppings = [toppings[0], ...newToppings];
+
 
 
     // Make a copy of the toppings array with slice()
+    toppingsCopy = toppings.slice();
     // Make a copy of the toppings array with a spread
+    toppingsCopy = [...toppings];
     // take out items 3 to 5 of your new toppings array with splice()
+    threeToFive = toppingsCopy.slice(2, 5);
     // find the index of Avocado with indexOf() / lastIndexOf()
-    // Check if hot sauce is in the toppings with includes()
+    const avocadoIndex = toppingsCopy.lastIndexOf('Avocado');
+    // Check if Hot sauce is in the toppings with includes()
+    isHS = toppingsCopy.includes('Hot sauce');
     // add it if it's not
+    toppingsCopy.includes('Hot sauce') ? '' : toppingsCopy.push('Hot sauce');
     // flip those toppings around with reverse()
+    toppingsCopy.reverse();
+
 
     /*
       Callback Methods
     */
 
     // find the first rating that talks about a burger with find()
+    firstBurgRating = feedback.find(f => f.comment.includes('burg')).rating;
+
     // find all ratings that are above 2 with filter()
+    ratingsAbove2 = feedback.filter(f => f.rating > 2);
+
     // find all ratings that talk about a burger with filter()
+    burgRatings = feedback.filter(f => f.comment.toLowerCase().includes('burg'));
+
     // Remove the one star rating however you like!
+    ratingsNot1 = feedback.filter(f => f.rating !== 1);
 
     // check if there is at least 5 of one type of meat with some()
+    atLeastFiveOfOneType = Object.values(meats).some(type => type >= 5);
+
     // make sure we have at least 3 of every meat with every()
+    atLeastThreeOfEveryType = Object.values(meats).every(type => type >= 3);
+
     // sort the toppings alphabetically with sort()
+    toppingsSorted = [...toppings].sort();
+
     // sort the order totals from most expensive to least with .sort()
+    orderTotalsFromExpensivetoLeast = [...orderTotals].sort((a, b) => b - a);
+
+
     // Sort the prices with sort()
+    pricesSorted = [...Object.entries(prices)].sort((a, b) => a[1] - b[1]);
 
     /*
       Looping Methods (next)
     */
-
   </script>
 </body>
 

@@ -26,7 +26,6 @@ function handleSubmit(e) {
 }
 
 function displayItems() {
-  console.log(items);
   const html = items
     .map(
       item => `<li class="shopping-item">

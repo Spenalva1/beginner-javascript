@@ -1,91 +1,72 @@
+const modal = document.querySelector('.modal');
+const prevButton = modal.querySelector('.prev');
+const nextButton = modal.querySelector('.next');
+let currentImage;
+
 function Gallery(gallery) {
-  if (!gallery) {
-    throw new Error('No Gallery Found!');
+  const imgs = Array.from(gallery.querySelectorAll('img'));
+  
+  function handleClickOutsideModal(e){
+    if (e.target === e.currentTarget) closeModal();
   }
-  // select the elements we need
-  const images = Array.from(gallery.querySelectorAll('img'));
-  const modal = document.querySelector('.modal');
-  const prevButton = modal.querySelector('.prev');
-  const nextButton = modal.querySelector('.next');
-  let currentImage;
+
+  function handleKeyUp(e){
+    if(e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowRight') return showNextImage();
+    if (e.key === 'ArrowLeft') return showPrevImage();
+  }
+
+  function handleImgKeyUp(e){
+    if(e.key === 'Enter') showImage(e.target);
+  }
+
+  function showNextImage(){
+    showImage(currentImage.nextElementSibling || gallery.firstElementChild);
+  }
+
+  function showPrevImage(){
+    showImage(currentImage.previousElementSibling || gallery.lastElementChild);
+  }
 
   function openModal() {
-    console.info('Opening Modal...');
-    // First check if the modal is already open
-    if (modal.matches('.open')) {
-      console.info('Madal already open');
-      return; // stop the function from running
-    }
+    if (modal.matches('.open')) return;
     modal.classList.add('open');
 
-    // Event listeners to be bound when we open the modal:
+    modal.addEventListener('click', handleClickOutsideModal);
     window.addEventListener('keyup', handleKeyUp);
     nextButton.addEventListener('click', showNextImage);
     prevButton.addEventListener('click', showPrevImage);
   }
 
   function closeModal() {
+    if (!modal.matches('.open')) return;
     modal.classList.remove('open');
-    // TODO: add event listeners for clicks and keyboard..
+    
+    modal.removeEventListener('click', handleKeyUp);
     window.removeEventListener('keyup', handleKeyUp);
     nextButton.removeEventListener('click', showNextImage);
     prevButton.removeEventListener('click', showPrevImage);
   }
 
-  function handleClickOutside(e) {
-    if (e.target === e.currentTarget) {
-      closeModal();
-    }
-  }
-
-  function handleKeyUp(event) {
-    if (event.key === 'Escape') return closeModal();
-    if (event.key === 'ArrowRight') return showNextImage();
-    if (event.key === 'ArrowLeft') return showPrevImage();
-  }
-
-  function showNextImage() {
-    showImage(currentImage.nextElementSibling || gallery.firstElementChild);
-  }
-  function showPrevImage() {
-    showImage(currentImage.previousElementSibling || gallery.lastElementChild);
-  }
-
   function showImage(el) {
-    if (!el) {
-      console.info('no image to show');
-      return;
-    }
-    // update the modal with this info
-    console.log(el);
+    if (!el) return;
     modal.querySelector('img').src = el.src;
     modal.querySelector('h2').textContent = el.title;
-    modal.querySelector('figure p').textContent = el.dataset.description;
+    modal.querySelector('p').textContent = el.dataset.description;
     currentImage = el;
     openModal();
   }
 
-  // These are our Event Listeners!
-  images.forEach(image =>
-    image.addEventListener('click', e => showImage(e.currentTarget))
-  );
-
-  // loop over each image
-  images.forEach(image => {
-    // attach an event listener for each image
-    image.addEventListener('keyup', e => {
-      // when that is keyup'd, check if it was enter
-      if (e.key === 'Enter') {
-        // if it was, show that image
-        showImage(e.currentTarget);
-      }
-    });
-  });
-
-  modal.addEventListener('click', handleClickOutside);
+  imgs.forEach(img => {
+    img.addEventListener('click', e => showImage(e.currentTarget));
+    img.addEventListener('keyup', handleImgKeyUp)
+  })
 }
 
-// Use it on the page
 
+
+
+
+// Use it on the page
 const gallery1 = Gallery(document.querySelector('.gallery1'));
 const gallery2 = Gallery(document.querySelector('.gallery2'));
